@@ -63,8 +63,11 @@
 }
 
 .sponsor img {
-  height: 40px;
-  float: left;
+    position: relative;
+    top: -10px;
+    left: 10px;
+    width: 30px;
+    float: left;
 }
 .sponsor span {
   line-height: 40px;
