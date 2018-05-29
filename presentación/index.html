@@ -1,0 +1,631 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>reveal.js</title>
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/simple.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+  <body>
+    <div class="sponsor">
+      <img src="assets/images/logo.svg"><span>Programación reactiva: lidiando con la asincronía<strong>&nbsp; @sanzante</strong></span>
+    </div>
+    <div class="reveal">
+      <div class="slides">
+        <section  data-background-image="assets/images/portada.png">
+          <div class="wrap-ovl">
+            <br>
+            <div class="session-title">
+              Programación reactiva: lidiando con la asincronía
+            </div>
+            <br>
+            <br>
+            Ricardo Sanz
+            <br>
+            <span class="xsmall"> sanzante / tunic</span>
+            <br>
+          </div>
+          <div class="spacer">
+        </section>
+
+
+
+        <section>
+            <img src="assets/images/sanzante.jpg" class="profile-photo">
+            <p>
+              <span>Ricardo Sanz</span>
+              <br>
+              <span class="xsmall"><em>Drupal Developer &amp; DevOps</em></span>
+              <br>
+              <a class="xsmall" href="https://drupal.org/u/tunic" target="_blank">drupal.org/u/tunic</a>
+              <br>
+              <a class="xsmall" href="https://twitter.com/sanzante" target="_blank">sanzante</a>
+            </p>
+            <img src="assets/images/metadrop-logo.svg" class="metadrop-logo">
+        </section>
+
+
+
+        <section>
+          <div class="header">
+            <span>Programación reactiva</span>
+          </div>
+          <ul>
+            <li class="fragment">Una forma de gestionar la asincronía.</li>
+            <li class="fragment">Esto NO es una charla sobre React.</li>
+            <li class="fragment">Basado en la librería ReactiveX.</li>
+            <li class="fragment">Utilizable en muchos lenguajes además de JavaScript: PHP, Java, Scala, C#, C++, Pyhton y otros.</li>
+          </ul>
+        </section>
+
+
+
+        <section>
+          <div class="header">
+            <span>Ventajas</span>
+          </div>
+          <ul>
+            <li class="fragment">Simplifica tremendamente el trabajo asíncrono.</li>
+            <li class="fragment">Muy fácil combinar y gestionar fuentes de datos asíncronas.</li>
+            <li class="fragment">Genera un código más corto, simple e intuitivo<sup>*</sup>.</li>
+            <li class="fragment">Mantenabilidad.</li>
+          </ul>
+        </section>
+
+
+
+        <section>
+          <div class="header">
+            <span>La asincronía</span>
+          </div>
+          <ul>
+            <li class="fragment">Eventos que suceden en el tiempo sin previsión.</li>
+            <li class="fragment">El entorno de un navegador es asíncrono.</li>
+            <li class="fragment">Interacción del usuario (ratón, teclado, etc).</li>
+            <li class="fragment">AJAX.</li>
+            <li class="fragment">Temporizadores o animaciones.</li>
+            <li class="fragment">WebSockets.</li>
+            <li class="fragment">Workers.</li>
+          </ul>
+        </section>
+
+        <section>
+          <div class="header">
+            <span>Callbacks</span>
+          </div>
+          <ul>
+            <li class="fragment">Reacción simple ante un evento.</li>
+           <li class="fragment">
+             Llamadas a una función (<i>listeners</i>).
+             <pre>
+               <code data-trim>
+jQuery('#grip').click(function() {
+  jQuery('#panel').slideUp();
+});
+               </code>
+             </pre>
+          </li>
+           <li class="fragment">Programar respuestas complejas es complicado.</li>
+           <li class="fragment"><i>Callback hell</i>.</li>
+          </ul>
+        </section>
+
+
+        <section>
+          <div class="header">
+            <span>Callback hell</span>
+          </div>
+            <pre>
+              <code data-trim>
+var doc;
+memStorage.get(docId, response => {
+doc = memResponse;
+  if (!memResponse) {
+    localStorage.get(docId, localResponse => {
+      doc = localResponse;
+      if (!localResponse) {
+        serverStorage.get(docId, serverResponse => {
+          doc = serverResponse;
+          if (!serverResponse) {
+            // Error.
+          }
+      });
+    }
+  });
+});
+              </code>
+            </pre>
+        </section>
+
+
+
+        <section>
+          <div class="header">
+            <span>Promises</span>
+          </div>
+          <ul>
+          <li class="fragment">Objetos que envuelven operaciones asícronas y reaccionan cuando hay un resultado.</li>
+          <li class="fragment">Son casi callbacks convertidas en objetos.</li>
+          <li class="fragment">Mejoran enormemente la gestión del flujo y de los errores.</li>
+          <li class="fragment">Incorporadas a ES2015 (ECMAScript 6).</li>
+          </ul>
+        </section>
+
+
+
+        <section>
+          <div class="header">
+            <span>Promises</span>
+          </div>
+          <ul>
+            <li class="fragment">Solo se resuelven una vez: devuelven un único valor.</li>
+            <li class="fragment">Seguir el hilo puede no ser trivial.</li>
+            <li class="fragment">No son diferidas (<i>lazy</i>).</li>
+            <li class="fragment">No son cancelables.</li>
+          </ul>
+        </section>
+
+
+
+        <section>
+          <div class="header">
+            <span>Programación reactiva</span>
+          </div>
+          <ul>
+            <li class="fragment">Es una forma de llevar capacidades de programación funcional a la programación imperativa.</li>
+            <li class="fragment">Programación usando flujos de datos asíncronos.</li>
+            <li class="fragment">Declaración de caminos de datos que procesan y transforman los datos que los cruzan.</li>
+            <li class="fragment">Se declaran 'reacciones' ante el cambio.</li>
+            <li class="fragment">Parecido en cierta forma al renderizado de  Angular, React y Vue.js.</li>
+          </ul>
+        </section>
+
+
+        <section>
+          <div class="header">
+            <span>Camino de datos</span>
+          </div>
+          <ul>
+            <li class="fragment">El camino que siguen unos ciertos datos.</li>
+            <li class="fragment">Es un concepto abstracto, una idea, no una estructura de datos.</li>
+          </ul>
+        </section>
+
+
+
+        <section>
+          <div class="header">
+            <span>Camino simple</span>
+          </div>
+          <div class="fragment">
+            <span>Ejemplo: un listener sobre un evento de click.</span>
+            <pre>
+              <code data-trim>
+jQuery('#grip').click(function() {
+  jQuery('#panel').slideUp();
+});
+              </code>
+            </pre>
+            <img  class="fragment" src="assets/images/camino_simple2.png">
+          </div>
+        </section>
+
+
+
+        <section>
+          <div class="header">
+            <span>Camino complejo</span>
+          </div>
+          <img src="assets/images/camino_transformaciones.png">
+
+          <div class="fragment">
+           <span>Ejemplo: Pasar de un click a una petición AJAX, y de ahí a unos objetos instanciados.
+           <img src="assets/images/camino_transformaciones_ejemplo.png">
+          </div>
+        </section>
+
+
+
+        <section>
+          <div class="header">
+            <span>Observables/Streams</span>
+          </div>
+          <ul>
+            <li class="fragment">Observables del patrón Observador.</li>
+            <li class="fragment">Flujos de datos (<i>streams</i>).</li>
+            <li class="fragment">Emiten datos hasta que terminan o se produce un error.</li>
+          </ul>
+        </section>
+
+
+
+        <section>
+          <div class="header">
+            <span>Diágramas de cánicas</span>
+          </div>
+          <ul>
+            <li class="fragment">Representa los datos de un flujo a lo largo del tiempo.</li>
+            <li class="fragment">Flujo que emite 4 elementos y luego finaliza.<img src="assets/images/marble_ok.png"></li>
+            <li class="fragment">Flujo que emite 3 elementos y luego emite un error.<img src="assets/images/marble_error.png"></li>
+          </ul>
+        </section>
+
+
+
+        <section>
+          <div class="header">
+            <span>Operadores</span>
+          </div>
+          <ul>
+            <li class="fragment">Encadenan <i>streams</i>.</li>
+            <li class="fragment">Permiten realizar transformaciones a los datos.</li>
+            <li class="fragment">Modulan los flujos.</li>
+            <li class="fragment">Crean streams.</li>
+            <li class="fragment">Combinan streams.</li>
+          </ul>
+        </section>
+
+
+
+        <section>
+          <div class="header">
+            <span>Operadores</span>
+          </div>
+          <div>
+            <span>Operador filter, filtra valores que no cumplen una condición.</span>
+            <img src="assets/images/marble_filter.png">
+          </div>
+        </section>
+
+
+
+        <section>
+          <div class="header">
+            <span>Operadores</span>
+          </div>
+          <div>
+            <span>Operador map, transforma los datos del <i>stream</i>.</span>
+            <img src="assets/images/marble_map.png">
+          </div>
+        </section>
+
+
+
+        <section>
+          <div class="header">
+            <span>Ej: Cronómetro acumulativo</span>
+          </div>
+          <ul>
+            <li class="fragment">Cronómetro manual que va acumulando tiempo.</li>
+            <li class="fragment">Un botón para activarlo.</li>
+            <li class="fragment">Otro botón para pausarlo/continuar.</li>
+          </ul>
+          <div>
+              <a class="fragment" href="https://codepen.io/sanzante/pen/gzyMNx">https://codepen.io/sanzante/pen/gzyMNx</a>
+          </div>
+        </section>
+
+
+        <section>
+          <section>
+            <pre>
+              <code data-trim data-noescape>
+<span class="fragment">var clockValue = 0;</span>
+<span class="fragment">var clockOn = true;</span>
+
+<span class="fragment">const btS$ = Rx.Observable.fromEvent(buttonStart, 'click');</span>
+<span class="fragment">const btP$ = Rx.Observable.fromEvent(buttonPause, 'click');</span>
+<span class="fragment">const clock$ = Rx.Observable.interval(1000);</span>
+
+<span class="fragment">btP$.subscribe(() => clockOn = !clockOn);</span>
+
+<span class="fragment">clock$.do(x => output1.innerHTML = x)</span>
+  <span class="fragment">.combineLatest(btS$, v => v)</span>
+  <span class="fragment">.filter(() => clockOn)</span>
+  <span class="fragment">.subscribe(() => output2.innerHTML = ++clockValue);</span>
+              </code>
+            </pre>
+          </section>
+
+
+
+          <section>
+          <div class="header">
+            <span>Diagrama de eventos</span>
+          </div>
+<br>
+            <pre>
+  clock$  ---1---2---3---4---5---6---7---8---9------>
+                    do
+          ---1---2---3---4---5---6---7---8---9------>
+  btS$    --------x--------------------------------->
+                  combineLatest
+          --------2--3---4---5---6---7---8---9------>
+                  filter (clockOn)
+          --------2--3---4---6-----------8---9------>
+
+  btP$    ---------------------x--------x----------->
+  clockV  000000001112222333344444444444455556666--->
+  clockOn 111111111111111111111000000000011111111--->
+
+            </pre>
+          </section>
+        </section>
+
+
+
+        <section data-background-color="#000000">
+          <div class="header">
+            <span>Decathlon</span>
+          </div>
+          <div>
+            <img src="assets/images/decathlon.png">
+          </div>
+          <span>¡Machacabotones!<span>
+        </section>
+
+
+        <section>
+          <div class="header">
+            <span>Machacabotonismo</span>
+          </div>
+          <ul>
+            <li class="fragment">Detectar cuantos clicks seguidos (doble, triple, etc).</li>
+            <li class="fragment">Se cuenta un tiempo a partir del primer click.</li>
+            <a class="fragment" href="http://jsfiddle.net/aaah4aef/">  http://jsfiddle.net/aaah4aef/</a>
+          </ul>
+        </section>
+
+
+
+
+        <section>
+          <pre>
+            <code data-trim data-noescape>
+<span class="fragment">var button = document.querySelector('.this');</span>
+<span class="fragment">var clickStream = Rx.Observable.fromEvent(button, 'click');</span>
+<span class="fragment">var text = document.querySelector('h2');</span>
+<span class="fragment">var multiClickStream = clickStream</span>
+    <span class="fragment">.buffer(() => Rx.Observable.interval(660))</span>
+    <span class="fragment">.map(list => list.length)</span>
+    <span class="fragment">.filter(x => x >= 2);</span>
+
+<span class="fragment">multiClickStream.subscribe(numclicks => {
+    text.textContent = '' + numclicks + 'x click';
+});<span>
+
+<span class="fragment">multiClickStream.throttle(1000)</span>
+<span class="fragment">    .subscribe(suggestion => {
+      document.querySelector('h2').textContent = ''
+    });
+</span>
+            </code>
+          </pre>
+        </section>
+
+
+
+
+        <section>
+          <div class="header">
+            <span>Pedir URL e instanciar</span>
+          </div>
+          <div>
+           <img src="assets/images/camino_transformaciones_ejemplo.png">
+          </div>
+          <pre>
+            <code data-trim data-noescape>
+<span class="fragment">Rx.Observable.fromEvent(button, 'click')</span>
+  <span class="fragment">.map(() => 'https://ejemplo.es/api/clasificacion'</span>
+  <span class="fragment">.flatMap(url => http.get(url))</span>
+  <span class="fragment">.map(items => items.map(new MyItem(item)))</span>
+  <span class="fragment">.subscribe(instancias => this.list = instancias);</span>
+            </code>
+          </pre>
+        </section>
+
+
+
+        <section>
+          <div class="header">
+            <span>Pedir URL e instanciar</span>
+          </div>
+          <span>Con refresco automático</span>
+          <pre>
+            <code data-trim data-noescape>
+<span>Rx.Observable.fromEvent(button, 'click')</span>
+<span class="fragment">  .merge(Rx.Observable.interval(60000))</span>
+<span class="fragment">  .map(() => 'https://ejemplo.es/api/clasificacion'
+  .flatMap(url => http.get(url))
+  .map(items => items.map(new MyItem(item)))
+  .subscribe(instancias => this.list = instancias);</span>
+            </code>
+          </pre>
+        </section>
+
+
+
+        <section>
+          <div class="header">
+            <span>Pedir URL e instanciar</span>
+          </div>
+          <span>Con refresco automático desactivable</span>
+          <pre>
+            <code data-trim data-noescape>
+<span class="fragment">Rx.Observable.interval(60000)</span>
+  <span class="fragment">.filter(() => this.autorefresh)</span>
+  <span class="fragment">.merge(Rx.Observable.fromEvent(button, 'click'))</span>
+  <span class="fragment">.map(() => 'https://ejemplo.es/api/clasificacion'
+  .flatMap(url => http.get(url))
+  .map(items => items.map(new MyItem(item)))
+  .subscribe(instancias => this.list = instancias);</span>
+            </code>
+          </pre>
+        </section>
+
+
+
+
+        <section>
+          <div class="header">
+            <span>Pedir URL e instanciar</span>
+          </div>
+          <span>Con refresco automático desactivable y gestión de errores.</span>
+          <pre>
+            <code data-trim data-noescape>
+<span class="fragment">Rx.Observable.interval(60000)</span>
+  <span class="fragment">.filter(() => this.autorefresh)</span>
+  <span class="fragment">.merge(Rx.Observable.fromEvent(button, 'click'))</span>
+  <span class="fragment">  .map(() => 'https://ejemplo.es/api/clasificacion'
+  .flatMap(url => http.get(url))
+  .map(items => items.map(new MyItem(item)))
+  .catch(err => Rx.Observable.of([]))
+  .subscribe(instancias => this.list = instancias);</span>
+            </code>
+          </pre>
+        </section>
+
+
+
+
+        <section>
+
+          <section>
+            <div class="header">
+              <span>Notas sobre Observables</span>
+            </div>
+            <ul>
+              <li class="fragment">No son EventEmitter.</li>
+              <li class="fragment">Pueden ser asíncronos y síncronos.</li>
+              <li class="fragment">Pueden ser <i>cold</i> o <i>hot</i>.</li>
+              <li class="fragment">Pueden ser multicast o unicast.</li>
+              <li class="fragment">Pueden compartir o no el origen de datos con sus subscriptores.</li>
+            </ul>
+          </section>
+
+          <section>
+          <div class="header">
+            <span>¿A quién seguir?</span>
+          </div>
+          Ejemplo de https://gist.github.com/staltz/868e7e9bc2a7b8c1f754
+          <ul>
+            <li class="fragment">Al iniciarse, lee datos de la API y muestra 3 sugerencias.</li>
+            <li class="fragment">Al clicar 'Refresh' carga 3 nuevas sugerencias en las 3 filas.</li>
+            <li class="fragment">Al clicar en la 'x' de una fila, elimina esa sugerencia y carga otra solo en esa fila.</li>
+            <li class="fragment">En cada fila hay un avatar y un enlace a la cuenta.</li>
+          </ul>
+          </section>
+
+          <section>
+          <div class="header">
+            <span>¿A quién seguir?</span>
+          </div>
+          <img src="assets/images/widget.png">
+          </section>
+
+
+
+          <section>
+            <img class="source-widget" src="assets/images/widget_source_code.png">
+          </section>
+
+        </section>
+
+
+
+        <section>
+          <div class="header">
+            <span>¿Por qué adoptarla?</span>
+          </div>
+
+            <div class="fragment">
+              Porque otros ya lo han hecho
+              <br>
+              <img src="assets/images/adopters.png">
+            </div>
+        </section>
+
+
+
+        <section>
+          <div class="header">
+            <span>¿Por qué adoptarla?</span>
+          </div>
+          <ul>
+            <li class="fragment">Pueden modelizar casi cualquier cosa.</li>
+            <li class="fragment">Trabajar con cualquier  fuente de datos.</li>
+            <li class="fragment">TC39 Observables: propuesta para estándar.</li>
+            <li class="fragment">Menos código, mejora de mantenimiento.</li>
+            <li class="fragment">Disponible en muchos lenguajes.</li>
+            <li class="fragment">Asincronía.</li>
+          </ul>
+        </section>
+
+
+
+        <section>
+          <div class="header">
+            <span>Enlaces</span>
+          </div>
+          <ul>
+            <li class="fragment">The introduction to Reactive Programming you've been missing: https://gist.github.com/staltz/868e7e9bc2a7b8c1f754</li>
+            <li class="fragment">Diagramas de canicas interactivos: http://rxmarbles.com/</li>
+            <li class="fragment">Rx Visualizer: https://rxviz.com/</li>
+            <li class="fragment">ReactiveX: http://reactivex.io/</li>
+            <li class="fragment">Ben Lesh: https://medium.com/@benlesh/</li>
+          </ul>
+        </section>
+
+
+
+        <section>
+          <div class="header">
+            <span>¿Preguntas?</span>
+          </div>
+          <ul>
+        </section>
+
+
+
+        <section>
+          <div class="header">
+            <span>¡Gracias!</span>
+          </div>
+          <ul>
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+      // More info about config & dependencies:
+      // - https://github.com/hakimel/reveal.js#configuration
+      // - https://github.com/hakimel/reveal.js#dependencies
+      Reveal.initialize({
+        dependencies: [
+          { src: 'plugin/markdown/marked.js' },
+          { src: 'plugin/markdown/markdown.js' },
+          { src: 'plugin/notes/notes.js', async: true },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+        ]
+      });
+    </script>
+  </body>
+</html>
